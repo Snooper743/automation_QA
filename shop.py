@@ -2,7 +2,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+from selenium.webdriver.support.select import Select
 from selenium import webdriver
+
+# title check
+
 driver = webdriver.Chrome(executable_path='C:/chromedriver.exe')
 driver.maximize_window()
 driver.implicitly_wait(5)
@@ -28,6 +32,8 @@ else:
     print("Название НЕ совпадает")
 driver.quit()
 
+# book counting
+
 driver = webdriver.Chrome(executable_path='C:/chromedriver.exe')
 driver.maximize_window()
 driver.implicitly_wait(5)
@@ -50,4 +56,31 @@ if len(book_count) == 3:
     print("В разделе 3 товара")
 else:
     print(f"В разделе", len(book_count), "товара")
+driver.quit()
+
+# Sorting
+
+driver = webdriver.Chrome(executable_path='C:/chromedriver.exe')
+driver.maximize_window()
+driver.implicitly_wait(5)
+wait = WebDriverWait(driver, 10)
+driver.get("https://practice.automationtesting.in/")
+my_account = driver.find_element_by_link_text("My Account")
+my_account.click()
+login_name = driver.find_element_by_id("username")
+login_name.send_keys("snooper743@gmail.com")
+login_password = driver.find_element_by_id("password")
+login_password.send_keys("Rexxar09051945")
+login_btn = driver.find_element_by_css_selector("#customer_login > div.u-column1.col-1 > form > p:nth-child(3) > input.woocommerce-Button.button")
+login_btn.click()
+shop_btn = driver.find_element_by_link_text("Shop")
+shop_btn.click()
+element = driver.find_element_by_class_name("orderby")
+element_check = element.get_attribute("value")
+assert element_check == "menu_order"
+select = Select(element)
+select.select_by_value("price-desc")
+element = driver.find_element_by_class_name("orderby")
+element_check = element.get_attribute("value")
+assert element_check == "price-desc"
 driver.quit()
